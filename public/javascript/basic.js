@@ -1,27 +1,22 @@
+// var parser = require("../parser.js");
+
 const MARGIN = 30;
-const HEIGHT = 600;
-const WIDTH = 600;
+const HEIGHT = 730;
+const WIDTH = 1000;
 const INNER_WIDTH = WIDTH - 2*MARGIN;
 const INNER_HEIGHT = HEIGHT - 2*MARGIN;
 
 var _xScale,_yScale;
-var generateSineExprValues = function(){
-	var sineValues = [];
-	for (var i = 0; i < 10; i++) {
-		sineValues.push({x:i,y:(Math.sin(3*i)+1)/2})
-		console.log((Math.sin(3*i)+1)/2,_yScale(Math.sin(3*i)+1)/2);
-	}
-	return sineValues;
-}
 
-var createSvg = function(){
+var createSvg = function(data){
 	d3.select('body')
 		.append('svg')
 		.attr('width',WIDTH)
 		.attr('height',HEIGHT);
+	var sortAccordingToValue = data.sort(function(a,b){ return a.y - b.y});
 
 	_xScale = d3.scaleLinear().domain([0,10]).range([0,INNER_WIDTH]);
-	_yScale = d3.scaleLinear().domain([0.0,1.0]).range([INNER_HEIGHT,0]);
+	_yScale = d3.scaleLinear().domain([sortAccordingToValue[0].y, sortAccordingToValue[data.length-1].y]).range([INNER_HEIGHT,0]);
 
 	var xAxis = d3.axisBottom(_xScale).ticks(10);
 	d3.select('svg')
@@ -36,7 +31,7 @@ var createSvg = function(){
 		.call(yAxis);
 }
 
-var drawLineGraph = function(){
+var drawLineGraph = function(data){
 	var graph = d3.select('svg')
 		.append('g')
 		.classed('graph',true)
@@ -45,7 +40,7 @@ var drawLineGraph = function(){
 	var sinPath = d3.line()
 		.x(function(d){ return _xScale(d.x)})
 		.y(function(d){ return _yScale((d.y))});
-	graph.append('path').classed('sin',true).attr('d',sinPath(generateSineExprValues()));
+	graph.append('path').classed('sin',true).attr('d',sinPath(data));
 }
 
 var createCircle = function(selection,dataSet){
@@ -60,17 +55,23 @@ var createCircle = function(selection,dataSet){
 		.attr('r',5);
 }
 
-var drawScatterPlot = function(){
+var drawScatterPlot = function(data){
 	var circle = d3.select('svg')
-		.classed('hollow-circle',true)
 		.append('g')
+		.classed('hollow-circle',true)
 		.attr('transform', 'translate('+MARGIN+', '+MARGIN+')');
 
-	createCircle(circle,generateSineExprValues());
+	createCircle(circle,data);
 }
 
-window.onload = function(){
-	createSvg();
-	drawLineGraph();
-	drawScatterPlot();
+var show = function(){
+	var box = d3.select('#expression-box').node().value;
+	// data = parser(box);
+	// console.log(box=="");
+	var data = [{x:0,y:0},{x:1,y:1},{x:2,y:2},{x:3,y:3},{x:4,y:4},{x:5,y:5},{x:6,y:6},{x:7,y:7},{x:8,y:8},{x:9,y:9}]
+	createSvg(data);
+	drawLineGraph(data);
+	drawScatterPlot(data);
 }
+
+window.onload = show; 
