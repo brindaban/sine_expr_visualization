@@ -1,3 +1,7 @@
+body{
+	font-size: 20px;
+	font-family: sans-serif;
+}
 .graph{
 	fill: none;
 	stroke: steelblue;
@@ -12,4 +16,11 @@
 
 #expression-box{
 	margin: 12px;
+}
+#expression{
+	font-size: 20px;
+}
+
+h1{
+	font-weight: 400;
 }

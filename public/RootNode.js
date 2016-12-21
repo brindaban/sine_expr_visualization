@@ -1,19 +1,10 @@
-var RootNode = function(){
-	this.parseTree = {};
-	this.identifiers = {};
+var RootNode = function () {
+    this.context = {};
 }
 
 RootNode.prototype = {
-	setTree : function(parseTree){
-		this.parseTree = parseTree;
-		return this;
-	},
-	addIdentifier : function(identifier, node){
-		this.identifiers[identifier.name] = node.process(this.identifiers);
-		return this;
-	},
-	evaluate : function(){
-		return this.parseTree.process(this.identifiers);
-	}
+    execute: function (parseTree) {
+        return parseTree.process(this.context);
+    }
 }
 module.exports = RootNode;

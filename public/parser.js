@@ -7,11 +7,14 @@ var parse = function(exp){
     var data = [];
 	for(var i = 0; i<10; i++){
 		var input = "x="+i+";"+exp;
-		data.push({x:i, y:parser.parse(input).evaluate()});
+		var splittedInput = input.split(";");
+		splittedInput = splittedInput.slice(0,splittedInput.length-1)
+		splittedInput.forEach(function(eachExp){
+			currentResult = parser.parse(eachExp+";");
+		})
+		data.push({x:i,y:currentResult});
 	}
-
     return data;
-	
 }
 
 module.exports = parse;

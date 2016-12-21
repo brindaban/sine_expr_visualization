@@ -1,10 +1,10 @@
 var NumNode = function(value){
-	this.value = value;
+	this.expression = value;
 }
 
 NumNode.prototype = {
 	process : function(){
-		return this.value;
+		return this.expression;
 	}
 }
 

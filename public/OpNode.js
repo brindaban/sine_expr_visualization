@@ -1,4 +1,4 @@
-var operations = require('./operations.js');
+var operations = require('./operations.js').binary;
 
 var OpNode = function(operator, left, right){
 	this.operator = operator;
@@ -7,8 +7,8 @@ var OpNode = function(operator, left, right){
 }
 
 OpNode.prototype = {
-	process : function(localVars){
-		return operations[this.operator](this.left.process(localVars),this.right.process(localVars));
+	process : function(context){
+		return operations[this.operator](this.left.process(context),this.right.process(context));
 	}
 }
 
